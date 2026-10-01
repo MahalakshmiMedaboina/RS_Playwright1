@@ -8,8 +8,13 @@ module.exports = defineConfig({
     timeout: 4000,
   },
   reporter: 'html',
-  use: {
-    browserName: 'chromium',
+  use: { 
+    // set the browser to use for the tests (chromium, firefox, or webkit)
+
+    // browserName: 'chromium',
+    // browserName: 'firefox',
+    browserName: 'webkit', 
+    headless: false, // set to true if you want to run tests in headless mode
   },
 });
 

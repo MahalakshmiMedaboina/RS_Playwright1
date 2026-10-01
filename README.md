@@ -18,8 +18,10 @@ This repository contains my hands-on learning, examples, and automation scripts 
 - [x] Project structure: test files, Playwright configuration, npm manifests, dependencies, and the GitHub Actions workflow.
 - [x] First test basics: `.spec.js` naming, importing `test` from `@playwright/test`, `test('name', async () => {})`, `async`/`await`, anonymous functions, and arrow functions.
 - [x] Configuration basics: `defineConfig`, `testDir`, test and expect timeouts, browser name, reporter, and module export.
+- [x] Browser configuration: selecting a browser engine by changing the `browserName` setting in `playwright.config.js`, and setting headed/headless execution.
 - [x] Running tests in headless and headed modes, and selecting a test file.
 - [x] Using `test.only()` during development; remove it before expecting the full suite to run.
+- [x] Page-title checks using `page.title()` and Playwright's `expect(...).toHaveTitle()` assertion.
 
 ## Project Setup
 
@@ -80,19 +82,20 @@ npx playwright test tests/UIBasicstests.spec.js
 - Playwright language bindings and the JavaScript-to-TypeScript course path
 - Playwright Test imports, test structure, async functions, and `await`
 - Test file naming with `.spec.js`
-- Basic Playwright configuration and Chromium selection
+- Basic Playwright configuration, switching the selected browser engine for cross-browser checks, and headed/headless settings
 - Headless versus headed execution
 - Using `npx` to run the local Playwright installation
 - `test.only()` for focused development runs
+- Reading a page title with `page.title()` and checking it with `expect(...).toHaveTitle()`
 
 ## Tests Implemented
 
-[`tests/UIBasicstests.spec.js`](tests/UIBasicstests.spec.js) currently contains two browser-navigation tests:
+[`tests/UIBasicstests.spec.js`](tests/UIBasicstests.spec.js) currently contains two browser-navigation tests with page-title assertions:
 
-- A browser-context test that opens the Rahul Shetty Academy practice login page.
-- A page-fixture test that opens Google.
+- A browser-context test that opens the Rahul Shetty Academy practice login page and checks its title.
+- A page-fixture test that opens Google and checks its title.
 
-These tests currently verify page navigation only; they do not include assertions. The first test is marked with `test.only()`, so a normal Playwright run selects that test alone until the focus marker is removed.
+The tests also print each page title to the console. Neither test is currently marked with `test.only()`, so both are eligible to run in the suite. The config currently selects headed WebKit. To check another browser, uncomment its `browserName` setting and comment out the current one, then run the suite again; each run uses the single browser selected in the config.
 
 ## Upcoming Learning
 
