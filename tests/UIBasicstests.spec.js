@@ -7,6 +7,7 @@ test.only('Browser Context Playwright  test', async ({browser}) => {
     const username = page.locator('#username'); // css selector of id
     const password = page.locator("[type='password']"); // css selector of an attribute
     const signInButton = page.locator('#signInBtn');  // css selector of id
+    const cardTitles = page.locator('.card-body a'); // css selector of a class with a child element
 
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
 
@@ -26,19 +27,24 @@ test.only('Browser Context Playwright  test', async ({browser}) => {
     await password.fill('Learning@830$3mK2');
     await signInButton.click();
 
-    console.log(await page.locator('.card-body a').first().textContent()); // css selector of a class with a child element
-    console.log(await page.locator('.card-body a').nth(1).textContent()); // css selector of a class with a child element and index
-    console.log(await page.locator('.card-body a').last().textContent()); // css selector of a class with a child element and last index
-});
-
-test('Page Playwright test', async ({page}) => {
-
-    await page.goto('https://google.com/');
-
-    // get the title of the page
-    console.log(await page.title());
-
     // assertion to check the title of the page
-    await expect(page).toHaveTitle('Google');
+    console.log(await cardTitles.first().textContent()); // get the text of the first element in the locator
+    // console.log(await cardTitles.nth(1).textContent()); // get the text of the second element in the locator
+    // console.log(await cardTitles.last().textContent()); // get the text of the last element in the locator
 
+    // get all the titles of the cards and print them
+    const allTitles = await cardTitles.allTextContents();
+    console.log(allTitles);
 });
+
+// test('Page Playwright test', async ({page}) => {
+
+//     await page.goto('https://google.com/');
+
+//     // get the title of the page
+//     console.log(await page.title());
+
+//     // assertion to check the title of the page
+//     await expect(page).toHaveTitle('Google');
+
+// });
