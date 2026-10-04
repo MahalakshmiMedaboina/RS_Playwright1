@@ -22,6 +22,8 @@ This repository contains my hands-on learning, examples, and automation scripts 
 - [x] Running tests in headless and headed modes, and selecting a test file.
 - [x] Using `test.only()` during development; remove it before expecting the full suite to run.
 - [x] Page-title checks using `page.title()` and Playwright's `expect(...).toHaveTitle()` assertion.
+- [x] Locating form controls with CSS selectors, filling and clearing inputs, and selecting matching elements with `.first()`, `.nth()`, and `.last()`.
+- [x] Checking invalid-login feedback and inspecting course links after a successful login.
 
 ## Project Setup
 
@@ -90,7 +92,7 @@ Run a specific test file:
 npx playwright test tests/UIBasicstests.spec.js
 ```
 
-The configuration in `playwright.config.js` selects headed Chromium. Set `headless: true` there to run without a visible browser, or change `browserName` to select another installed browser engine.
+The configuration in `playwright.config.js` selects Chromium, runs headed locally, and switches to headless mode when the `CI` environment variable is set. The GitHub Actions workflow installs the browser dependencies and runs `npx playwright test`. Change `browserName` to select another installed browser engine.
 
 > **Current focus:** The login test uses `test.only()`, so Playwright discovers both tests but runs only that test. Remove `.only` when you want the full suite, including the Google title test, to run.
 
@@ -104,15 +106,17 @@ The configuration in `playwright.config.js` selects headed Chromium. Set `headle
 - Using `npx` to run the local Playwright installation
 - `test.only()` for focused development runs
 - Reading a page title with `page.title()` and checking it with `expect(...).toHaveTitle()`
+- CSS locators for form controls, filling and clearing inputs, and choosing the first, indexed, or last matching element
+- Asserting invalid-login feedback and inspecting course links after login
 
 ## Tests Implemented
 
 [`tests/UIBasicstests.spec.js`](tests/UIBasicstests.spec.js) currently contains two tests:
 
-- A browser-context test that opens the Rahul Shetty Academy practice login page, checks its title, submits invalid credentials, and asserts that an "Incorrect" message appears.
+- A browser-context test that opens the Rahul Shetty Academy practice login page, checks its title, submits invalid credentials and asserts that an "Incorrect" message appears, then retries with valid credentials and inspects the first, second, and last course links.
 - A page-fixture test that opens Google and checks its title. This test is currently excluded from execution by `test.only()` on the login test.
 
-Both tests print their page title to the console. To check another browser, change the `browserName` setting in `playwright.config.js` and run the suite again; each run uses the single browser selected in the config.
+Both tests print their page title to the console. To check another browser, change the `browserName` setting in `playwright.config.js` and run the suite again; each run uses the single browser selected in the config. Only the login test currently runs because it is marked with `test.only()`.
 
 ## Upcoming Learning
 
