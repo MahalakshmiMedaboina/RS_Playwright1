@@ -11,7 +11,7 @@ test.only('Browser Context Playwright  test', async ({page}) => {
     await page.waitForLoadState('networkidle');
 
     // when the above line network doest work then we can use the below line to wait for the element to be visible
-    // await page.locator('.card-body').first().waitFor();
+    // await page.locator('.card-body').first().waitFor({timeout: 3000});
 
     // get all the titles of products and print them
     const titles = await page.locator('.card-body b').allTextContents();
