@@ -33,6 +33,13 @@ Current tools and technologies:
 - VS Code
 - Git and GitHub Actions
 
+Prerequisites: Node.js and npm. After cloning the repository, install the project dependencies and the Chromium browser used by the current configuration:
+
+```bash
+npm ci
+npx playwright install chromium
+```
+
 ## Project Structure
 
 ```text
@@ -53,19 +60,25 @@ Test runs also create ignored output in `test-results/` and `playwright-report/`
 
 ## Commands Learned
 
-Initialize a Playwright project:
+Initialize a new Playwright project (one-time scaffolding command):
 
 ```bash
 npm init playwright
 ```
 
-Run the tests headlessly (the default):
+Run the tests:
+
+```bash
+npm test
+```
+
+The equivalent direct Playwright command is:
 
 ```bash
 npx playwright test
 ```
 
-Run the tests with the browser visible:
+Run the tests with the browser visible. The current configuration already runs headed; this flag also requests headed mode explicitly:
 
 ```bash
 npx playwright test --headed
@@ -76,6 +89,10 @@ Run a specific test file:
 ```bash
 npx playwright test tests/UIBasicstests.spec.js
 ```
+
+The configuration in `playwright.config.js` selects headed Chromium. Set `headless: true` there to run without a visible browser, or change `browserName` to select another installed browser engine.
+
+> **Current focus:** The login test uses `test.only()`, so Playwright discovers both tests but runs only that test. Remove `.only` when you want the full suite, including the Google title test, to run.
 
 ## Playwright Concepts Covered
 
@@ -90,12 +107,12 @@ npx playwright test tests/UIBasicstests.spec.js
 
 ## Tests Implemented
 
-[`tests/UIBasicstests.spec.js`](tests/UIBasicstests.spec.js) currently contains two browser-navigation tests with page-title assertions:
+[`tests/UIBasicstests.spec.js`](tests/UIBasicstests.spec.js) currently contains two tests:
 
-- A browser-context test that opens the Rahul Shetty Academy practice login page and checks its title.
-- A page-fixture test that opens Google and checks its title.
+- A browser-context test that opens the Rahul Shetty Academy practice login page, checks its title, submits invalid credentials, and asserts that an "Incorrect" message appears.
+- A page-fixture test that opens Google and checks its title. This test is currently excluded from execution by `test.only()` on the login test.
 
-The tests also print each page title to the console. Neither test is currently marked with `test.only()`, so both are eligible to run in the suite. The config currently selects headed WebKit. To check another browser, uncomment its `browserName` setting and comment out the current one, then run the suite again; each run uses the single browser selected in the config.
+Both tests print their page title to the console. To check another browser, change the `browserName` setting in `playwright.config.js` and run the suite again; each run uses the single browser selected in the config.
 
 ## Upcoming Learning
 

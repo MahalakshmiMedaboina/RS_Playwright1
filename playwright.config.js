@@ -3,7 +3,7 @@ const { defineConfig } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests',
-  timeout: 40 * 1000,
+  timeout: 30 * 1000,
   expect: {
     timeout: 4000,
   },
@@ -11,9 +11,9 @@ module.exports = defineConfig({
   use: { 
     // set the browser to use for the tests (chromium, firefox, or webkit)
 
-    // browserName: 'chromium',
+    browserName: 'chromium',
     // browserName: 'firefox',
-    browserName: 'webkit', 
+    // browserName: 'webkit', 
     headless: false, // set to true if you want to run tests in headless mode
   },
 });
