@@ -24,6 +24,7 @@ This repository contains my hands-on learning, examples, and automation scripts 
 - [x] Page-title checks using `page.title()` and Playwright's `expect(...).toHaveTitle()` assertion.
 - [x] Locating form controls with CSS selectors, filling and clearing inputs, and collecting text from matching elements with `.allTextContents()`.
 - [x] Checking invalid-login feedback and collecting course-link text after submitting credentials.
+- [x] Logging in to the client application, waiting for network idle, and collecting product titles.
 
 ## Project Setup
 
@@ -50,6 +51,7 @@ npx playwright install chromium
 │   └── workflows/
 │       └── playwright.yml
 ├── tests/
+│   ├── ClientApp.spec.js
 │   └── UIBasicstests.spec.js
 ├── .gitignore
 ├── package.json
@@ -92,9 +94,15 @@ Run a specific test file:
 npx playwright test tests/UIBasicstests.spec.js
 ```
 
+Run the client application test:
+
+```bash
+npx playwright test tests/ClientApp.spec.js
+```
+
 The configuration in `playwright.config.js` selects Chromium, runs headed locally, and switches to headless mode when the `CI` environment variable is set. The GitHub Actions workflow installs the browser dependencies and runs `npx playwright test`. Change `browserName` to select another installed browser engine.
 
-> **Current focus:** The login test uses `test.only()`, so Playwright discovers both tests but runs only that test. Remove `.only` when you want the full suite, including the Google title test, to run.
+> **Current focus:** Each spec file has a test marked with `test.only()`. Playwright currently runs these two focused tests. Remove `.only` when adding tests that should run as part of the full suite.
 
 ## Playwright Concepts Covered
 
@@ -108,14 +116,16 @@ The configuration in `playwright.config.js` selects Chromium, runs headed locall
 - Reading a page title with `page.title()` and checking it with `expect(...).toHaveTitle()`
 - CSS locators for form controls, filling and clearing inputs, and collecting text from matching elements
 - Asserting invalid-login feedback and collecting course-link text
+- Waiting for `networkidle` and collecting product titles in the client application
 
 ## Tests Implemented
 
-[`tests/UIBasicstests.spec.js`](tests/UIBasicstests.spec.js) currently contains one active test:
+The `tests` directory currently contains two active tests:
 
-- A browser-context test that opens the Rahul Shetty Academy practice login page, checks its title, submits invalid credentials and asserts that an "Incorrect" message appears, then submits another password and collects text from all matching course links.
+- [`tests/UIBasicstests.spec.js`](tests/UIBasicstests.spec.js) opens the practice login page, checks its title, submits invalid credentials and asserts an "Incorrect" message, then submits another password and collects course-link text.
+- [`tests/ClientApp.spec.js`](tests/ClientApp.spec.js) opens the client application, fills the login form, waits for network idle, and collects product titles from the page.
 
-The test prints the page title and collected course-link text. A Google page-title example remains commented out in the test file. The login test uses `test.only()` for focused development; remove it when adding more active tests. To check another browser, change the `browserName` setting in `playwright.config.js` and run the suite again.
+Both active tests use `test.only()` and run when the suite is executed. A Google page-title example remains commented out in `UIBasicstests.spec.js`. To check another browser, change the `browserName` setting in `playwright.config.js` and run the suite again.
 
 ## Upcoming Learning
 
