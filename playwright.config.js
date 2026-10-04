@@ -14,7 +14,7 @@ module.exports = defineConfig({
     browserName: 'chromium',
     // browserName: 'firefox',
     // browserName: 'webkit', 
-    headless: false, // set to true if you want to run tests in headless mode
+    headless: Boolean(process.env.CI),
   },
 });
 
